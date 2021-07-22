@@ -1,5 +1,6 @@
 bin/
 obj/
 .vscode
+.vs
 StoreUI/appsettings.json
 StoreWebUI/appsettings.json
