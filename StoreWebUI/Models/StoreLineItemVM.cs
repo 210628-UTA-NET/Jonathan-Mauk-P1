@@ -18,11 +18,13 @@ namespace StoreWebUI.Models
             Id = p_storeLineItem.Id;
             StoreId = p_storeLineItem.FkId;
             Count = p_storeLineItem.Count;
+            ProductName = p_storeLineItem.Product.Name;
         }
 
         public int Id { get; set; }
         public int StoreId { get; set; }
         public int Count { get; set; }
+        public string ProductName { get; set; }
 
     }
 }
