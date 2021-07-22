@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreAppData;
+using StoreAppBL;
 using StoreModels;
+using StoreWebUI.Models;
 
 namespace StoreWebUI.Controllers
 {
@@ -22,7 +24,13 @@ namespace StoreWebUI.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            List<CustomerVM> customerVMs = new List<CustomerVM>();
+            List<Customer> customers = await _context.Customers.ToListAsync();
+            foreach (Customer customer in customers)
+            {
+                customerVMs.Add(new CustomerVM(customer));
+            }
+            return View(customerVMs);
         }
 
         // GET: Customers/Details/5
@@ -40,7 +48,7 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            return View(customer);
+            return View(new CustomerVM(customer));
         }
 
         // GET: Customers/Create
@@ -58,11 +66,12 @@ namespace StoreWebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                CustomerBL.AddCustomer(customer.Name, customer.Address, customer.Email, customer.PhoneNumber);
+                /*_context.Add(customer);
+                await _context.SaveChangesAsync();*/
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            return View(new CustomerVM(customer));
         }
 
         // GET: Customers/Edit/5
@@ -78,7 +87,7 @@ namespace StoreWebUI.Controllers
             {
                 return NotFound();
             }
-            return View(customer);
+            return View(new CustomerVM(customer));
         }
 
         // POST: Customers/Edit/5
@@ -113,7 +122,7 @@ namespace StoreWebUI.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(customer);
+            return View(new CustomerVM(customer));
         }
 
         // GET: Customers/Delete/5
@@ -131,7 +140,7 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            return View(customer);
+            return View(new CustomerVM(customer));
         }
 
         // POST: Customers/Delete/5
