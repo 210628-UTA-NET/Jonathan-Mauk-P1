@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using StoreModels;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StoreAppData
 {
@@ -37,11 +38,23 @@ namespace StoreAppData
 
         public List<LineItems> RetrieveLineItems(int fkid)
         {
-            return _context.StoreLineItems.Select(
-                rest => rest as LineItems
-            ).ToList().Where(
+            List<StoreLineItem> lineItems = _context.StoreLineItems.Include(
+                p => p.Product).Select(
+                rest => rest
+            ).ToList();
+            foreach (StoreLineItem item in lineItems)
+            {
+                System.Console.WriteLine(item.FkId);
+            }
+            lineItems = lineItems.Where(
                 rest => rest.FkId == fkid
             ).ToList();
+            List<LineItems> val = new List<LineItems>();
+            foreach (var item in lineItems)
+            {
+                val.Add(item);
+            }
+            return val;
         }
 
         /// <summary>

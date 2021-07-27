@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using StoreModels;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StoreAppData
 {
@@ -52,11 +53,11 @@ namespace StoreAppData
 
         public List<StoreFront> RetrieveStoreFronts()
         {
-            return _context.StoreFronts.Select(
+            return _context.StoreFronts.Include(inv => inv.Inventory).ThenInclude(prod => prod.Product).Select(
                 rest => rest
             ).ToList().OrderBy(
                 o => o.Id
-            ).ToList()            ;
+            ).ToList();
         }
     }
 }
