@@ -21,6 +21,7 @@ namespace StoreWebUI.Models
             Address = p_customer.Address;
             Email = p_customer.Email;
             PhoneNumber = p_customer.PhoneNumber;
+            CustomerOrders = new List<OrderVM>();
         }
 
         public int CustomerId { get; set; }
@@ -36,5 +37,7 @@ namespace StoreWebUI.Models
 
         [Required]
         public string PhoneNumber{ get; set; }
+
+        public IEnumerable<OrderVM> CustomerOrders { get; set; }
     }
 }
