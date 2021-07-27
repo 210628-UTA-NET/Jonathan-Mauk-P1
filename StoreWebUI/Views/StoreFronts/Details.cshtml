@@ -1,4 +1,4 @@
-﻿@model StoreModels.StoreFront
+﻿@model StoreWebUI.Models.StoreFrontDetailsVM
 
 @{
     ViewData["Title"] = "Details";
@@ -24,6 +24,34 @@
         </dd>
     </dl>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LineItemVMs.First().ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LineItemVMs.First().Count)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LineItemVMs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Count)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+            </tr>
+        }
+    </tbody>
+</table>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
