@@ -1,0 +1,71 @@
+﻿@model StoreWebUI.Models.OrderVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Order</h1>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Store</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StoreName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.StoreName)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Total Price: $@Html.DisplayFor(price => price.TotalPrice)</h4>
+</div>
+<form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Quantity Ordered
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderLineItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(prod => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(stock => item.Count)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button type="submit" class="btn btn-secondary">Checkout</button>
+</form>
+<hr />
+<div>
+    <a class="btn btn-danger" asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId">Cancel Order</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

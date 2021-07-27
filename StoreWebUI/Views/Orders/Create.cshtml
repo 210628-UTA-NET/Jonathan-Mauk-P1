@@ -1,40 +1,83 @@
-﻿@model StoreModels.Orders
+﻿@model StoreWebUI.Models.CreateOrderFromCustomerVM
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Orders</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="TotalPrice" class="control-label"></label>
-                <input asp-for="TotalPrice" class="form-control" />
-                <span asp-validation-for="TotalPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LocationId" class="control-label"></label>
-                <input asp-for="LocationId" class="form-control" />
-                <span asp-validation-for="LocationId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class ="form-control" asp-items="ViewBag.CustomerId"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<h1>Create Order</h1>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Email)
+        </dd>
+    </dl>
+</div>
+<form>
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Choose Store
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            @foreach (var item in Model.Stores)
+            {
+                <li><a asp-action="Cart" asp-route-customerId="@Model.Customer.CustomerId" asp-route-storeId="@item.Id">@item.Name.</a></li>
+            }
+        </ul>
+    </div>
+</form>
+@if (Model.ChosenStore != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+               <th>
+                   Product Name
+               </th>
+               <th>
+                   Amount in Stock
+               </th>
+               <th>
+                   Quantity Ordered
+               </th> 
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.ChosenStore.LineItemVMs)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(prod => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(stock => item.Count)
+                </td>
+                <td>
+                    <form>
+                        <label for="item"># of items ordered</label>
+                        <input type="number" id="@item.ProductName" name="@item.ProductName" min="0" max="@item.Count" />
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+<hr />
+<div>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.Customer.CustomerId">Back to Customer Details</a>
 </div>
 
 @section Scripts {

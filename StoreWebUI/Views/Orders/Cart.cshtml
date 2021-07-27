@@ -1,0 +1,93 @@
+﻿@model StoreWebUI.Models.CreateOrderFromCustomerVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create Order</h1>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Email)
+        </dd>
+    </dl>
+</div>
+<div>
+    <h4>Store</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChosenStore.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChosenStore.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ChosenStore.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ChosenStore.Address)
+        </dd>
+    </dl>
+</div>
+@if (Model.ChosenStore != null)
+{
+    <form method="post" asp-action="Checkout" asp-controller="Orders" asp-route-p_customerId="@Model.Customer.CustomerId"
+          asp-route-p_storeId="@Model.ChosenStore.Id">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Product Name
+                    </th>
+                    <th>
+                        Amount in Stock
+                    </th>
+                    <th>
+                        Quantity Ordered
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ChosenStore.LineItemVMs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(prod => item.ProductName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(stock => item.Count)
+                        </td>
+                        <td>
+                            <label for="item"># of items ordered</label>
+                            <input type="number" name="p_orderedLineItem" min="0" max="@item.Count" value="0" />
+                            <input type="hidden" name="p_orderedLineItem" value="@item.ProductId" />
+                            <input type="hidden" name="p_orderedLineItem" value="@item.Id" />                        
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <button type="submit" class="btn btn-secondary">Checkout</button>
+    </form>
+}
+<hr />
+<div>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.Customer.CustomerId">Back to Customer Details</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
