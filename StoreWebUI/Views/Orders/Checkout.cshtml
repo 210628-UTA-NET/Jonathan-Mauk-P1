@@ -33,7 +33,9 @@
 <div>
     <h4>Total Price: $@Html.DisplayFor(price => price.TotalPrice)</h4>
 </div>
-<form>
+<form asp-action="FinalizeOrder">
+    <input type="hidden" name="p_customerId" value="@Model.CustomerId" />
+    <input type="hidden" name="p_storeId" value="@Model.LocationId" />
     <table class="table">
         <thead>
             <tr>
@@ -54,6 +56,8 @@
                     </td>
                     <td>
                         @Html.DisplayFor(stock => item.Count)
+                        <input type="hidden" name="p_orderedLineItem" value="@item.Count" />
+                        <input type="hidden" name="p_orderedLineItem" value="@item.OrderId" />
                     </td>
                 </tr>
             }

@@ -8,8 +8,9 @@ namespace StoreModels
         public int Id { get; set; }
         public List<OrderLineItem> LineItems { get; set; }
         public decimal TotalPrice { get; set; }
-        public int LocationId { get; set; }
+        public int StoreFrontId { get; set; }
         public int CustomerId { get; set; }
+        public DateTime DateOrdered { get; set; }
 
         public Orders()
         {

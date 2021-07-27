@@ -107,13 +107,25 @@ namespace StoreWebUI.Controllers
             {
                 Id = 0,
                 CustomerId = p_customerId,
-                LocationId = p_storeId,
+                StoreFrontId = p_storeId,
                 LineItems = orderedItems,
                 TotalPrice = price
             };
             return View(new OrderVM(currentOrder, store.Name, customer.Name));
         }
 
+        [HttpPost]
+        public IActionResult FinalizeOrder(int p_customerId, int p_storeId, params string[] p_orderedLineItem)
+        {
+            OrderBL finalOrder = new OrderBL();
+            finalOrder.BeginOrder(p_customerId, StoreFrontBL._storeFrontBL.FindStore(p_storeId));
+            for (int i = 0; i < p_orderedLineItem.Length; i += 2)
+            {
+                finalOrder.AddOrderItem(Int32.Parse(p_orderedLineItem[i + 1]), Int32.Parse(p_orderedLineItem[i]));
+            }
+            finalOrder.FinalizeOrder();
+            return NotFound();
+        }
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

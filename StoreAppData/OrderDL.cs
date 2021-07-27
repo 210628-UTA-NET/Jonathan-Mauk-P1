@@ -50,39 +50,41 @@ namespace StoreAppData
             return _context.Orders.Select(
                 rest => rest
             ).ToList().Where(
-                rest => rest.LocationId == p_storeID
+                rest => rest.StoreFrontId == p_storeID
             ).ToList();
         }
 
         public bool PlaceOrder(Orders order, List<LineItems> p_changedLineItems)
         {
             bool val = false;
-            try
-            {
+            //try
+            //{
                 // Update the StoreLineItems to match the order being made
                 foreach (LineItems item in p_changedLineItems)
                 {
                     StoreLineItemDL._storeLineItem.UpdateLineItemNoSave(item.Id, -item.Count);
                 }
                 // Add the order to the database
-                _context.Orders.Add(order);
 
                 // Add the OrderLineItems to the database
                 foreach (OrderLineItem item in order.LineItems)
                 {
                     // Passing in the created order allows for the OrderLineItems to 
                     // get the Order's OrderId value
-                    OrderLineItemDL._orderLineItem.AddLineItem(item, order);
+                    item.ProductId = item.Product.Id;
+                    item.Product = null;
+                    //OrderLineItemDL._orderLineItem.AddLineItem(item, order);
                 }
+                _context.Orders.Add(order);
                 _context.SaveChanges();     // Save Changes to the database
                 StoreLineItemDL._storeLineItem.StoreLineItemSave(); //Makes sure that the Store line items are updated
                 val = true;
-            }
-            // Catch any errors and return false to signal a failure
-            catch (System.Exception)
-            {
-                val = false;
-            }
+            //}
+            //// Catch any errors and return false to signal a failure
+            //catch (System.Exception)
+            //{
+            //    val = false;
+            //}
             return val;
         }
     }

@@ -18,7 +18,7 @@ namespace StoreWebUI.Models
         {
             Id = p_order.Id;
             TotalPrice = p_order.TotalPrice;
-            LocationId = p_order.LocationId;
+            LocationId = p_order.StoreFrontId;
             CustomerId = p_order.CustomerId;
             StoreName = p_storeName;
             CustomerName = p_customerName;

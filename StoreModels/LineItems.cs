@@ -1,13 +1,16 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StoreModels
 {
     public class LineItems
     {
         public int Id { get; set; }
+        [NotMapped]
         public virtual int FkId { get; set; }
-        public Products Product { get; set; }
+        public int ProductId { get; set; }
         public int Count { get; set; }
+        public virtual Products Product { get; set; }
         public LineItems()
         {
             
@@ -21,23 +24,23 @@ namespace StoreModels
 
     public class OrderLineItem : LineItems
     {
-        private int _orderId;
+        public int OrdersId { get; set; }
         public OrderLineItem() : base()
         {
             
         }
-
-        //public override int FkId { get => _orderId; set => _orderId = value; }
+        [NotMapped]
+        public override int FkId { get => OrdersId; set => OrdersId = value; }
     }
 
     public class StoreLineItem : LineItems
     {
-        public int _storeId;
+        public int StoreFrontId { get; set; }
         public StoreLineItem() : base()
         {
             
         }
-
-        //public override int FkId { get => _storeId; set => _storeId = value; }
+        [NotMapped]
+        public override int FkId { get => StoreFrontId; set => StoreFrontId = value; }
     }
 }
