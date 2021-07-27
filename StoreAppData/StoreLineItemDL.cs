@@ -32,7 +32,7 @@ namespace StoreAppData
 
         public LineItems FindLineItem(int id)
         {
-            StoreLineItem storeLineItem = _context.StoreLineItems.Find(id);
+            StoreLineItem storeLineItem = _context.StoreLineItems.Include(prod => prod.Product).FirstOrDefault(item => item.Id == id);
             return storeLineItem;
         }
 
@@ -67,7 +67,7 @@ namespace StoreAppData
         {
             try
             {
-                StoreLineItem updatedLineItem = _context.StoreLineItems.Find(id);
+                StoreLineItem updatedLineItem = _context.StoreLineItems.Include(prod => prod.Product).FirstOrDefault(item => item.Id == id);
                 updatedLineItem.Count += addedQuantity;
                 _context.StoreLineItems.Update(updatedLineItem);
                 _context.SaveChanges();
@@ -90,7 +90,7 @@ namespace StoreAppData
         {
             try
             {
-                StoreLineItem updatedLineItem = _context.StoreLineItems.Find(id);
+                StoreLineItem updatedLineItem = _context.StoreLineItems.Include(prod => prod.Product).FirstOrDefault(item => item.Id == id);
                 updatedLineItem.Count += addedQuantity;
                 _context.StoreLineItems.Update(updatedLineItem);
                 return true;
