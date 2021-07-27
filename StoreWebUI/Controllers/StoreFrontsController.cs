@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreAppData;
 using StoreModels;
+using StoreAppBL;
+using StoreWebUI.Models;
 
 namespace StoreWebUI.Controllers
 {
@@ -22,7 +24,13 @@ namespace StoreWebUI.Controllers
         // GET: StoreFronts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.StoreFronts.ToListAsync());
+            //await _context.StoreFronts.ToListAsync()
+            List<StoreFrontVM> storeFrontVMs = new List<StoreFrontVM>();
+            foreach (StoreFront item in StoreFrontBL._storeFrontBL.RetrieveStores())
+            {
+                storeFrontVMs.Add(new StoreFrontVM(item));
+            }
+            return View(storeFrontVMs);
         }
 
         // GET: StoreFronts/Details/5
@@ -33,14 +41,17 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            var storeFront = await _context.StoreFronts
-                .FirstOrDefaultAsync(m => m.Id == id);
+            //var storeFront = await _context.StoreFronts
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            int storeId = (int)id;
+            StoreFront storeFront = StoreFrontBL._storeFrontBL.FindStore(storeId);
+            List<LineItems> lineItems = StoreFrontBL._storeFrontBL.GetStoreInventory(storeFront.Id);
             if (storeFront == null)
             {
                 return NotFound();
             }
 
-            return View(storeFront);
+            return View(new StoreFrontDetailsVM(storeFront, lineItems));
         }
 
         // GET: StoreFronts/Create

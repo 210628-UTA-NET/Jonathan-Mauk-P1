@@ -62,7 +62,7 @@ namespace StoreWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Name,Address,Email,PhoneNumber")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,Name,Address,Email,PhoneNumber")] CustomerVM customer)
         {
             if (ModelState.IsValid)
             {
@@ -71,7 +71,7 @@ namespace StoreWebUI.Controllers
                 await _context.SaveChangesAsync();*/
                 return RedirectToAction(nameof(Index));
             }
-            return View(new CustomerVM(customer));
+            return View(customer);
         }
 
         // GET: Customers/Edit/5
