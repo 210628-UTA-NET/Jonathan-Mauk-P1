@@ -35,11 +35,11 @@ namespace StoreAppBL
         /// </summary>
         /// <param name="p_customer">The Customer object of the customer making the order</param>
         /// <param name="p_storeFront">The StoreFront object of the storefront where the order is being ordered from</param>
-        public void BeginOrder(Customer p_customer, StoreFront p_storeFront)
+        public void BeginOrder(int p_customerId, StoreFront p_storeFront)
         {
-            CurrentOrder.LocationId = p_storeFront.Id;
+            CurrentOrder.StoreFrontId = p_storeFront.Id;
             CurrentOrder.TotalPrice = 0;
-            CurrentOrder.CustomerId = p_customer.CustomerId;
+            CurrentOrder.CustomerId = p_customerId;
             CurrentOrder.LineItems = new List<OrderLineItem>();
             CurrentStore = p_storeFront;
         }
@@ -127,6 +127,7 @@ namespace StoreAppBL
             {
                 return false;
             }
+            CurrentOrder.DateOrdered = DateTime.Now;
             return OrderDL._orderDL.PlaceOrder(CurrentOrder, _changedStoreLineItems);
         }
     }
