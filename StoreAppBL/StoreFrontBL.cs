@@ -54,6 +54,11 @@ namespace StoreAppBL
             }
         }
 
+        public List<LineItems> GetStoreInventory(int p_storeId)
+        {
+            return StoreLineItemDL._storeLineItem.RetrieveLineItems(p_storeId);
+        }
+
         /// <summary>
         /// Calls the data layer to update StoreLineItems in the database
         /// </summary>
