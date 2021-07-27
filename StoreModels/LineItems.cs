@@ -27,17 +27,17 @@ namespace StoreModels
             
         }
 
-        public override int FkId { get => _orderId; set => _orderId = value; }
+        //public override int FkId { get => _orderId; set => _orderId = value; }
     }
 
     public class StoreLineItem : LineItems
     {
-        private int _storeId;
+        public int _storeId;
         public StoreLineItem() : base()
         {
             
         }
 
-        public override int FkId { get => _storeId; set => _storeId = value; }
+        //public override int FkId { get => _storeId; set => _storeId = value; }
     }
 }
