@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using StoreAppData;
 using StoreModels;
+using StoreWebUI.Models;
+using StoreAppBL;
 
 namespace StoreWebUI.Controllers
 {
@@ -43,10 +45,73 @@ namespace StoreWebUI.Controllers
             return View(orders);
         }
 
-        // GET: Orders/Create
-        public IActionResult Create()
+        // GET: Orders/Create/5
+        public IActionResult Create(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Customer customer = CustomerBL.SearchCustomer((int)id);
+            List<StoreFront> storeFronts = StoreFrontBL._storeFrontBL.RetrieveStores();
+            return View(new CreateOrderFromCustomerVM(customer, storeFronts));
+        }
+
+        public IActionResult Cart(int? customerId, int? storeId)
+        {
+            if (customerId == null || storeId == null)
+            {
+                return NotFound();
+            }
+            Customer customer = CustomerBL.SearchCustomer((int)customerId);
+            StoreFront chosenStore = StoreFrontBL._storeFrontBL.FindStore((int)storeId);
+            Console.WriteLine(storeId);
+            List<StoreFront> storeFronts = StoreFrontBL._storeFrontBL.RetrieveStores();
+            return View(new CreateOrderFromCustomerVM(customer, chosenStore, storeFronts));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p_customerId">The Id of the Customer making the order</param>
+        /// <param name="p_storeId">The Id of the store the order is being placed at</param>
+        /// <param name="p_orderedLineItem">A list containing string values of
+        ///                                 The amount of items being ordered
+        ///                                 The Id of the Product being ordered
+        ///                                 The Id of the StoreLineItem being ordered from
+        ///             These three values repeat for every StoreLineItem in the Store</param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Checkout(int p_customerId, int p_storeId, params string[] p_orderedLineItem)
+        {
+            Customer customer = CustomerBL.SearchCustomer(p_customerId);
+            StoreFront store = StoreFrontBL._storeFrontBL.FindStore(p_storeId);
+            List<OrderLineItem> orderedItems = new List<OrderLineItem>();
+            decimal price = 0;
+            for (int i = 0; i < p_orderedLineItem.Length; i += 3)
+            {
+                int count = Int32.Parse(p_orderedLineItem[i]);
+                if (count > 0)
+                {
+                    OrderLineItem orderLineItem = new OrderLineItem()
+                    {
+                        Count = count,
+                        Product = ProductDL._productDL.FindProduct(Int32.Parse(p_orderedLineItem[i + 1])),
+                        FkId = Int32.Parse(p_orderedLineItem[i + 2])
+                    };
+                    orderedItems.Add(orderLineItem);
+                    price += orderLineItem.Product.Price * Int32.Parse(p_orderedLineItem[i]);
+                }
+            }
+            Orders currentOrder = new Orders()
+            {
+                Id = 0,
+                CustomerId = p_customerId,
+                LocationId = p_storeId,
+                LineItems = orderedItems,
+                TotalPrice = price
+            };
+            return View(new OrderVM(currentOrder, store.Name, customer.Name));
         }
 
         // POST: Orders/Create
