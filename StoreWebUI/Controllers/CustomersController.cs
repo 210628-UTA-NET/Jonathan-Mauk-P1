@@ -33,6 +33,26 @@ namespace StoreWebUI.Controllers
             return View(customerVMs);
         }
 
+        public IActionResult CustomerSearch(string p_name)
+        {
+
+            List<CustomerVM> customerVMs = new List<CustomerVM>();
+            List<Customer> customers;
+            if (p_name == "")
+            {
+                customers = CustomerBL.SearchForCustomers(p_name);
+            }
+            else
+            {
+                customers = new List<Customer>();
+            }
+            foreach (Customer customer in customers)
+            {
+                customerVMs.Add(new CustomerVM(customer));
+            }
+            return View(customerVMs);
+        }
+
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -6,6 +6,11 @@
 
 <h1>ACME Customers</h1>
 
+<form asp-action="CustomerSearch">
+    <label for="item">Search for a Customer</label>
+    <input type="text" name="p_name"/>
+    <button type="submit">Search</button>
+</form>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
