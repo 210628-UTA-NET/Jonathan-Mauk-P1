@@ -21,7 +21,12 @@ namespace StoreWebUI.Models
             Address = p_customer.Address;
             Email = p_customer.Email;
             PhoneNumber = p_customer.PhoneNumber;
-            CustomerOrders = new List<OrderVM>();
+            List<OrderVM>  temp = new List<OrderVM>();
+            foreach (Orders item in p_customer.Orders)
+            {
+                temp.Add(new OrderVM(item, item.StoreFrontId.ToString(), p_customer.Name));
+            }
+            CustomerOrders = temp;
         }
 
         public int CustomerId { get; set; }

@@ -44,10 +44,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerOrders.First().StoreName)
+                Store Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CustomerOrders.First().TotalPrice)
+                Total Price
+            </th>
+            <th>
+                Time Ordered
             </th>
             <th></th>
         </tr>
@@ -63,7 +66,11 @@
                     @Html.DisplayFor(modelItem => item.TotalPrice)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.DateOrdered)
+                </td>
+                <td>
                     <a asp-controller="Orders" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                </td>
             </tr>
         }
     </tbody>

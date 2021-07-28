@@ -25,7 +25,7 @@ namespace StoreWebUI.Controllers
         public async Task<IActionResult> Index()
         {
             List<CustomerVM> customerVMs = new List<CustomerVM>();
-            List<Customer> customers = await _context.Customers.ToListAsync();
+            List<Customer> customers = CustomerBL.ListCustomers();
             foreach (Customer customer in customers)
             {
                 customerVMs.Add(new CustomerVM(customer));
@@ -41,8 +41,7 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
+            Customer customer = CustomerBL.SearchCustomer((int)id);
             if (customer == null)
             {
                 return NotFound();

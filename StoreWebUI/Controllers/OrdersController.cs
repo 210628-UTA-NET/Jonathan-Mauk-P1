@@ -35,14 +35,15 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            var orders = await _context.Orders
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (orders == null)
+            Orders order = OrderBL.FindOrder((int)id);
+            StoreFront store = StoreFrontBL._storeFrontBL.FindStore(order.StoreFrontId);
+            Customer customer = CustomerBL.SearchCustomer(order.CustomerId);
+            if (order == null)
             {
                 return NotFound();
             }
 
-            return View(orders);
+            return View(new OrderVM(order, store.Name, customer.Name));
         }
 
         // GET: Orders/Create/5

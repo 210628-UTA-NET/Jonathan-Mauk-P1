@@ -22,12 +22,14 @@ namespace StoreWebUI.Models
             CustomerId = p_order.CustomerId;
             StoreName = p_storeName;
             CustomerName = p_customerName;
+            DateOrdered = p_order.DateOrdered;
             List<OrderLineItemVM> temp = new List<OrderLineItemVM>();
             foreach (OrderLineItem item in p_order.LineItems)
             {
                 temp.Add(new OrderLineItemVM(item));
             }
             OrderLineItems = temp;
+
         }
 
         public int Id { get; set; }
@@ -36,6 +38,7 @@ namespace StoreWebUI.Models
         public string StoreName{ get; set; }
         public int CustomerId { get; set; }
         public string CustomerName { get; set; }
+        public DateTime DateOrdered { get; set; }
         public IEnumerable<OrderLineItemVM> OrderLineItems { get; set; }
     }
 
