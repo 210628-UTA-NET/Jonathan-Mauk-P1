@@ -12,6 +12,10 @@ namespace StoreAppData
         {
             _context = p_context;
         }
+        public void ChangeContext(StoreAppDBContext p_context)
+        {
+            _context = p_context;
+        }
 
         public LineItems FindLineItem(int id)
         {

@@ -14,6 +14,11 @@ namespace StoreAppData
             _context = p_context;
         }
 
+        public void ChangeContext(StoreAppDBContext p_context)
+        {
+            _context = p_context;
+        }
+
         /// <summary>
         /// Converts an Entities.Order class to a StoreModels.Orders class
         /// </summary>

@@ -15,6 +15,10 @@ namespace StoreAppData
         {
             _context = p_context;
         }
+        public void ChangeContext(StoreAppDBContext p_context)
+        {
+            _context = p_context;
+        }
 
         /// <summary>
         /// Converts an Entities.StoreFront class to a StoreModels.StoreFront class

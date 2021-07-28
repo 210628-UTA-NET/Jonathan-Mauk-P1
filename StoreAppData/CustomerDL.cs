@@ -13,6 +13,11 @@ namespace StoreAppData
         // Singleton for CustomerDL
         public static CustomerDL _customerDL = new CustomerDL(new StoreAppDBContext(DatabaseConnection.GetDatabaseOptions()));
 
+        public void ChangeContext(StoreAppDBContext p_context)
+        {
+            _context = p_context;
+        }
+
         public CustomerDL(StoreAppDBContext p_context) : base(p_context)
         {
             _context = p_context;

@@ -12,6 +12,10 @@ namespace StoreAppData
         {
             _context = p_context;
         }
+        public void ChangeContext(StoreAppDBContext p_context)
+        {
+            _context = p_context;
+        }
 
         /// <summary>
         /// Converts an Entities.Product class to a StoreModels.Products class
