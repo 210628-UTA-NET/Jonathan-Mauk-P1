@@ -59,6 +59,11 @@ namespace StoreAppBL
             return StoreLineItemDL._storeLineItem.RetrieveLineItems(p_storeId);
         }
 
+        public List<Orders> GetStoreOrders(int p_storeId)
+        {
+            return OrderDL._orderDL.FindOrdersByStore(p_storeId);
+        }
+
         /// <summary>
         /// Calls the data layer to update StoreLineItems in the database
         /// </summary>
