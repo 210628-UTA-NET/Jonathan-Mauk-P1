@@ -41,8 +41,6 @@ namespace StoreWebUI.Controllers
                 return NotFound();
             }
 
-            //var storeFront = await _context.StoreFronts
-            //    .FirstOrDefaultAsync(m => m.Id == id);
             int storeId = (int)id;
             StoreFront storeFront = StoreFrontBL._storeFrontBL.FindStore(storeId);
             List<LineItems> lineItems = StoreFrontBL._storeFrontBL.GetStoreInventory(storeFront.Id);
@@ -52,6 +50,32 @@ namespace StoreWebUI.Controllers
             }
 
             return View(new StoreFrontDetailsVM(storeFront, lineItems));
+        }
+
+        public IActionResult Replenish(int id)
+        {
+            StoreFront storeFront = StoreFrontBL._storeFrontBL.FindStore(id);
+            List<LineItems> lineItems = StoreFrontBL._storeFrontBL.GetStoreInventory(storeFront.Id);
+            if (storeFront == null)
+            {
+                return NotFound();
+            }
+
+            return View(new StoreFrontDetailsVM(storeFront, lineItems));
+        }
+
+        [HttpPost]
+        public IActionResult ReplenishInventory(params string[] p_replenish)
+        {
+            for (int i = 0; i < p_replenish.Length; i += 2)
+            {
+                int count = Int32.Parse(p_replenish[i]);
+                if(count > 0)
+                {
+                    StoreFrontBL._storeFrontBL.ReplenishInventory(Int32.Parse(p_replenish[i + 1]), count);
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: StoreFronts/Create
