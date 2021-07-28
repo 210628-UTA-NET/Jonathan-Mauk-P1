@@ -54,17 +54,37 @@ namespace StoreWebUI.Controllers
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, int? sort)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+            if (sort == null)
+            {
+                sort = -1;
             }
 
             Customer customer = CustomerBL.SearchCustomer((int)id);
             if (customer == null)
             {
                 return NotFound();
+            }
+
+            switch (sort)
+            {
+                case 0:
+                    customer.Orders = customer.Orders.OrderBy(date => date.DateOrdered).ToList();
+                    break;
+                case 1:
+                    customer.Orders = customer.Orders.OrderBy(date => date.DateOrdered).ToList();
+                    customer.Orders.Reverse();
+                    break;
+                case 2:
+                    customer.Orders = customer.Orders.OrderBy(price => price.TotalPrice).ToList();
+                    break;
+                default:
+                    break;
             }
 
             return View(new CustomerVM(customer));

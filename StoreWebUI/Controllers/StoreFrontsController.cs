@@ -52,6 +52,44 @@ namespace StoreWebUI.Controllers
             return View(new StoreFrontDetailsVM(storeFront, lineItems));
         }
 
+        public IActionResult DetailOrders(int? id, int? sort)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (sort == null)
+            {
+                sort = -1;
+            }
+
+            int storeId = (int)id;
+            StoreFront storeFront = StoreFrontBL._storeFrontBL.FindStore(storeId);
+            List<Orders> storeOrders = StoreFrontBL._storeFrontBL.GetStoreOrders(storeId);
+            if (storeFront == null)
+            {
+                return NotFound();
+            }
+
+            switch (sort)
+            {
+                case 0:
+                    storeOrders = storeOrders.OrderBy(date => date.DateOrdered).ToList();
+                    break;
+                case 1:
+                    storeOrders = storeOrders.OrderBy(date => date.DateOrdered).ToList();
+                    storeOrders.Reverse();
+                    break;
+                case 2:
+                    storeOrders = storeOrders.OrderBy(price => price.TotalPrice).ToList();
+                    break;
+                default:
+                    break;
+            }
+
+            return View(new StoreFrontOrdersVM(storeFront, storeOrders));
+        }
+
         public IActionResult Replenish(int id)
         {
             StoreFront storeFront = StoreFrontBL._storeFrontBL.FindStore(id);

@@ -125,7 +125,7 @@ namespace StoreWebUI.Controllers
                 finalOrder.AddOrderItem(Int32.Parse(p_orderedLineItem[i + 1]), Int32.Parse(p_orderedLineItem[i]));
             }
             finalOrder.FinalizeOrder();
-            return NotFound();
+            return RedirectToAction(nameof(Details), "Customers", new { id = p_customerId });
         }
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

@@ -1,4 +1,4 @@
-﻿@model StoreWebUI.Models.CustomerVM
+﻿@model StoreWebUI.Models.StoreFrontOrdersVM
 
 @{
     ViewData["Title"] = "Details";
@@ -7,7 +7,7 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Customer</h4>
+    <h4>StoreFront</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -22,23 +22,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Address)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
     </dl>
-</div>
-<h4>Customer's Orders</h4>
-<div>
-    <a asp-controller="Orders" asp-action="Create" asp-route-id="@Model.CustomerId">Make an Order</a>
 </div>
 <form>
     <div class="dropdown">
@@ -48,13 +32,13 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
             <li>
-                <a asp-action="Details" asp-route-sort="0">Sort by Oldest</a>
+                <a asp-action="DetailOrders" asp-route-sort="0">Sort by Oldest</a>
             </li>
             <li>
-                <a asp-action="Details" asp-route-sort="1">Sort by Latest</a>
+                <a asp-action="DetailOrders" asp-route-sort="1">Sort by Latest</a>
             </li>
             <li>
-                <a asp-action="Details" asp-route-sort="2">Sort by Price</a>
+                <a asp-action="DetailOrders" asp-route-sort="2">Sort by Price</a>
             </li>
         </ul>
     </div>
@@ -63,7 +47,7 @@
     <thead>
         <tr>
             <th>
-                Store Id
+                Customer Id
             </th>
             <th>
                 Total Price
@@ -75,11 +59,11 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.CustomerOrders)
+        @foreach (var item in Model.StoreOrders)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StoreName)
+                    @Html.DisplayFor(modelItem => item.CustomerName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.TotalPrice)
@@ -95,5 +79,6 @@
     </tbody>
 </table>
 <div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

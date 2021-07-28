@@ -67,4 +67,29 @@ namespace StoreWebUI.Models
             LineItemVMs = tempList;
         }
     }
+
+    public class StoreFrontOrdersVM
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public IEnumerable<OrderVM> StoreOrders { get; set; }
+        public StoreFrontOrdersVM()
+        {
+
+        }
+
+        public StoreFrontOrdersVM(StoreFront store, List<Orders> orders)
+        {
+            Id = store.Id;
+            Name = store.Name;
+            Address = store.Address;
+            List<OrderVM> temp = new List<OrderVM>();
+            foreach (Orders item in orders)
+            {
+                temp.Add(new OrderVM(item, Name, item.CustomerId.ToString()));
+            }
+            StoreOrders = temp;
+        }
+    }
 }

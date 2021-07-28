@@ -69,5 +69,6 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId" >Back to Customer</a>
+    <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.CustomerId">Back to Customer</a> | 
+    <a asp-controller="StoreFronts" asp-action="DetailOrders" asp-route-id="@Model.LocationId">Back to Store</a>
 </div>
