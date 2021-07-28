@@ -28,7 +28,7 @@ namespace StoreWebUI.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             List<CustomerVM> customerVMs = new List<CustomerVM>();
             List<Customer> customers = CustomerBL.ListCustomers();
@@ -44,7 +44,7 @@ namespace StoreWebUI.Controllers
 
             List<CustomerVM> customerVMs = new List<CustomerVM>();
             List<Customer> customers;
-            if (p_name == "")
+            if (p_name != null)
             {
                 customers = CustomerBL.SearchForCustomers(p_name);
             }
@@ -60,7 +60,7 @@ namespace StoreWebUI.Controllers
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id, int? sort)
+        public IActionResult Details(int? id, int? sort)
         {
             if (id == null)
             {
@@ -107,7 +107,7 @@ namespace StoreWebUI.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Name,Address,Email,PhoneNumber")] CustomerVM customer)
+        public IActionResult Create([Bind("CustomerId,Name,Address,Email,PhoneNumber")] CustomerVM customer)
         {
             if (ModelState.IsValid)
             {
