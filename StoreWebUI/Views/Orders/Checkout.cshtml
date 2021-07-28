@@ -43,6 +43,9 @@
                     Product Name
                 </th>
                 <th>
+                    Product Price
+                </th>
+                <th>
                     Quantity Ordered
                 </th>
             </tr>
@@ -53,6 +56,9 @@
                 <tr>
                     <td>
                         @Html.DisplayFor(prod => item.ProductName)
+                    </td>
+                    <td>
+                        $@Html.DisplayFor(price => item.ProductPrice)
                     </td>
                     <td>
                         @Html.DisplayFor(stock => item.Count)

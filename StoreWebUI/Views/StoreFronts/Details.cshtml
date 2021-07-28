@@ -31,6 +31,9 @@
                 @Html.DisplayNameFor(model => model.LineItemVMs.First().ProductName)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.LineItemVMs.First().ProductPrice)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.LineItemVMs.First().Count)
             </th>
             <th></th>
@@ -42,6 +45,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.ProductPrice)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Count)
