@@ -19,6 +19,12 @@ namespace StoreWebUI.Controllers
         public OrdersController(StoreAppDBContext context)
         {
             _context = context;
+            CustomerDL._customerDL.ChangeContext(context);
+            OrderDL._orderDL.ChangeContext(context);
+            OrderLineItemDL._orderLineItem.ChangeContext(context);
+            StoreFrontDL._storeFrontDL.ChangeContext(context);
+            StoreLineItemDL._storeLineItem.ChangeContext(context);
+            ProductDL._productDL.ChangeContext(context);
         }
 
         // GET: Orders
