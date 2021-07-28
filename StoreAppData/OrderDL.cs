@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using StoreModels;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StoreAppData
 {
@@ -32,13 +33,14 @@ namespace StoreAppData
 
         public Orders FindOrder(int orderID)
         {
-            Orders order = _context.Orders.Find(orderID);
+            Orders order = _context.Orders.Include(items => items.LineItems).ThenInclude(prod => prod.Product)
+                .FirstOrDefault(order => order.Id == orderID);
             return order;
         }
 
         public List<Orders> FindOrdersByCustomer(int p_customerID)
         {
-            return _context.Orders.Select(
+            return _context.Orders.Include(items => items.LineItems).ThenInclude(prod => prod.Product).Select(
                 rest => rest
             ).ToList().Where(
                 rest => rest.CustomerId == p_customerID
@@ -47,7 +49,7 @@ namespace StoreAppData
 
         public List<Orders> FindOrdersByStore(int p_storeID)
         {
-            return _context.Orders.Select(
+            return _context.Orders.Include(items => items.LineItems).ThenInclude(prod => prod.Product).Select(
                 rest => rest
             ).ToList().Where(
                 rest => rest.StoreFrontId == p_storeID

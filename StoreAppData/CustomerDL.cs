@@ -3,6 +3,7 @@ using StoreModels;
 using System.Text.Json;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace StoreAppData
 {
@@ -51,14 +52,17 @@ namespace StoreAppData
             };
         }*/
 
-        public StoreModels.Customer FindCustomer(int id)
+        public Customer FindCustomer(int id)
         {
-            return _context.Customers.Find(id);
+            return _context.Customers.Include(ord => ord.Orders).ThenInclude(ordItems => ordItems.LineItems)
+                .ThenInclude(prod => prod.Product)
+                .FirstOrDefault( cust => cust.CustomerId == id);
         }
 
-        public List<StoreModels.Customer> FindCustomers(string name)
+        public List<Customer> FindCustomers(string name)
         {
-            return _context.Customers.Select(
+            return _context.Customers.Include(ord => ord.Orders).ThenInclude(ordItems => ordItems.LineItems)
+                .ThenInclude(prod => prod.Product).Select(
                 rest => rest
             ).ToList().Where(
                 rest => rest.Name.Contains(name)
@@ -67,9 +71,10 @@ namespace StoreAppData
             ).ToList();
         }
 
-        public List<StoreModels.Customer> RetrieveCustomers()
+        public List<Customer> RetrieveCustomers()
         {
-            return _context.Customers.Select(
+            return _context.Customers.Include(ord => ord.Orders).ThenInclude(ordItems => ordItems.LineItems)
+                .ThenInclude(prod => prod.Product).Select(
                 rest => rest
             ).ToList();
         }
