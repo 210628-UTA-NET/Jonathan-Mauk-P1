@@ -72,7 +72,6 @@ namespace StoreWebUI.Controllers
             }
             Customer customer = CustomerBL.SearchCustomer((int)customerId);
             StoreFront chosenStore = StoreFrontBL._storeFrontBL.FindStore((int)storeId);
-            Console.WriteLine(storeId);
             List<StoreFront> storeFronts = StoreFrontBL._storeFrontBL.RetrieveStores();
             return View(new CreateOrderFromCustomerVM(customer, chosenStore, storeFronts));
         }

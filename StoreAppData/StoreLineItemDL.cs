@@ -46,10 +46,6 @@ namespace StoreAppData
                 p => p.Product).Select(
                 rest => rest
             ).ToList();
-            foreach (StoreLineItem item in lineItems)
-            {
-                System.Console.WriteLine(item.FkId);
-            }
             lineItems = lineItems.Where(
                 rest => rest.FkId == fkid
             ).ToList();
